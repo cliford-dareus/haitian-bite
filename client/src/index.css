@@ -1,0 +1,18 @@
+*,*::after,*::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.mapboxgl-popup-content{
+    padding: 0;
+    border-radius: 1em;
+    overflow: hidden;
+}
+
+.mapboxgl-popup-close-button{
+    font-size: 1.5rem;
+    color: white;
+    right: .5em;
+    top: .5em;
+}
