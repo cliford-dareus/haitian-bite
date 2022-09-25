@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getLocations } from '../helper/FetchLocation';
-import { LocationPageContainer } from '../Utils/Styles/locationPage';
+import { PopupCardTitle } from '../Utils/Styles/HomePage';
+import { LocationDetailReviewContainer, LocationPageContainer, LocationPageDetails, LocationPageImage, LocationPageReviewContainer, LocationPageTitleContainer } from '../Utils/Styles/locationPage';
 
 const Location = () => {
     const [ locations, setLocations ] = useState([]);
@@ -28,9 +29,36 @@ const Location = () => {
     return(
     <LocationPageContainer>
         { place && 
-            <div>
-                {place.title}
-            </div>
+            <>
+                <LocationPageTitleContainer>
+                    <h2>{place.title}</h2>
+                    <p>{place.rating}</p>
+                </LocationPageTitleContainer>
+
+                <LocationPageImage>
+                    <img src="" alt="" />
+                </LocationPageImage>
+                
+                <LocationDetailReviewContainer>
+                    <LocationPageDetails>
+                        <PopupCardTitle>
+                            About
+                        </PopupCardTitle>
+                        <div>
+                            <p>{place.description}</p>
+                            <p>{place.adress}</p>
+                        </div>
+                        
+                    </LocationPageDetails>
+                    <LocationPageReviewContainer>
+                        <PopupCardTitle>
+                            Review
+                        </PopupCardTitle>
+
+                        <p>{place.review}</p>
+                    </LocationPageReviewContainer>
+                </LocationDetailReviewContainer>
+            </>
         }
     </LocationPageContainer>
   )

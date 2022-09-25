@@ -6,5 +6,6 @@ export const AppContainer = styled.div`
     background-color: black;
     display: flex;
     transition: all 1s;
+    font-family:  'Montserrat', sans-serif;
 `;
 
