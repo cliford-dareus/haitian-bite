@@ -16,7 +16,6 @@ const Home = ({ isOpen}) => {
   const { coords, isReady } = useContext(userContext);
   const [ locations, setLocations ] = useState([]);
   const [ showPopup, setShowPopup ] = useState({});
-
   const [ viewport, setViewport ] = useState({
     width: `calc(100vw - ${isOpen? `150px` : `55px`}`,
     height: `calc(100vh - ${isOpen? `150px` : `55px`}`,
@@ -24,6 +23,11 @@ const Home = ({ isOpen}) => {
     latitude: coords.latitude,
     zoom: 15
   });
+
+  const handlePopup = (location) => {
+    setShowPopup({ [location._id]: true });
+    setViewport({...viewport, longitude: location.longitude, latitude: location.latitude});
+  };
 
   useEffect(() => {
         const locations = async() => {
@@ -36,9 +40,8 @@ const Home = ({ isOpen}) => {
 
   return (
     <HomePageContainer>
-
       <SearchForm />
-
+      
       {isReady? <Map 
         { ...viewport}
         // mapStyle= "mapbox://styles/cliford-dareus/cl8cigcp7000314q6uklerz41"
@@ -69,7 +72,7 @@ const Home = ({ isOpen}) => {
               latitude={location.latitude}
               longitude={location.longitude}
               anchor="bottom"
-              onClick={() => setShowPopup({ [location._id]: true })}
+              onClick={() => handlePopup(location)}
             >
               <img 
                 src={pin} 
