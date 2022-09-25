@@ -9,9 +9,7 @@ function App() {
   const [ isOpen, setIsOpen ] = useState(false);
 
   return (
-    <AppContainer 
-      isOpen={isOpen}
-    >
+    <AppContainer>
       <SideBar 
         setIsOpen={setIsOpen}
         isOpen={isOpen}

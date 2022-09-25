@@ -7,7 +7,7 @@ import Loading from '../Components/Loading';
 import pin from '../assets/pin.png';
 import ypin from '../assets/ypin.png'
 
-import { getAllLocations } from '../Utils/API';
+import { getLocations } from '../helper/FetchLocation';
 
 import { HomePageContainer, MarkerTitle, PopupButton, PopupCardTitle, PopupImageContainer, PopupItemDetailsContainer, PopupItemsContainer } from '../Utils/Styles/HomePage';
 
@@ -19,21 +19,20 @@ const Home = ({ isOpen}) => {
 
   const [ viewport, setViewport ] = useState({
     width: `calc(100vw - ${isOpen? `150px` : `55px`}`,
-    height: '100vh',
+    height: `calc(100vh - ${isOpen? `150px` : `55px`}`,
     longitude: coords.longitude,
     latitude: coords.latitude,
     zoom: 15
   });
 
-  const getLocations = async () => {
-    const locations = await getAllLocations();
-    setLocations(locations);
-  };
-
   useEffect(() => {
-    getLocations();
-    setViewport({...viewport, longitude: coords.longitude, latitude: coords.latitude})
-  },[isReady]);
+        const locations = async() => {
+            const location = await getLocations()
+            setLocations(location);
+        };
+        locations();
+        setViewport({...viewport, longitude: coords.longitude, latitude: coords.latitude});
+    },[isReady]);
 
   return (
     <HomePageContainer>
@@ -55,7 +54,7 @@ const Home = ({ isOpen}) => {
         >
           <img 
             src={ypin} 
-            style={{width:`${6 * 14}px`, height: `${6 * 14}px`}}
+            style={{width:`${6 *13}px`, height: `${6 * 13}px`}}
             alt="" 
           />
           <MarkerTitle>
@@ -77,7 +76,9 @@ const Home = ({ isOpen}) => {
                 alt="" 
                 style={{width:`${6 * 14}px`, height: `${6 * 14}px`}}
               />
-              <MarkerTitle>{location.title}</MarkerTitle>
+              <MarkerTitle>
+                {location.title}
+              </MarkerTitle>
             </Marker>
             {
               showPopup[location._id] && (

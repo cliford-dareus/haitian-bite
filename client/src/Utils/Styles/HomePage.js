@@ -6,6 +6,7 @@ export const HomePageContainer = styled.div`
     position: relative;
     width: 100%;
     height: 100vh;
+    transition: width 1s cubic-bezier(0.55, 0.06, 0.68, 0.19);
     // background-color: red;
 `;
 

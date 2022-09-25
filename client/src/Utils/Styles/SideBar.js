@@ -16,7 +16,7 @@ export const SideBarContainerStyled = styled.div`
     flex-direction: column;
     // align-items: center;
     overflow: hidden;
-    transition: all 1s;
+    transition: all 1s cubic-bezier(0.55, 0.06, 0.68, 0.19);
 `;
 
 export const SideBarLogoContainer = styled.div`

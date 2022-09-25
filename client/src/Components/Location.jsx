@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getAllLocations } from '../Utils/API'
+import { getLocations } from '../helper/FetchLocation';
+import { LocationPageContainer } from '../Utils/Styles/locationPage';
 
 const Location = () => {
     const [ locations, setLocations ] = useState([]);
@@ -8,31 +9,30 @@ const Location = () => {
     const { pathname } = useLocation();
     const id = pathname.split('/:')[1];
 
-    const getLocations = async () => {
-        const locations = await getAllLocations();
-        setLocations(locations);
-    };
-
     const location = locations.filter((location) => {
         if(location._id === id ){
-            return location
+            return location;
         }
     });
 
     useEffect(() => {
-        getLocations()
+        const locations = async() => {
+            const location = await getLocations()
+            setLocations(location);
+        };
+        locations();
     },[]);
 
-   const place = location[0];
-  return (
-    <div>
-        { 
-            place&& 
+    const place = location[0];
+
+    return(
+    <LocationPageContainer>
+        { place && 
             <div>
                 {place.title}
             </div>
         }
-    </div>
+    </LocationPageContainer>
   )
 };
 
