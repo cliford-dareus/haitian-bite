@@ -1,10 +1,11 @@
-import { AiOutlineHome, AiOutlineHeart, AiOutlineProfile } from 'react-icons/ai'
-import { GoLocation } from 'react-icons/go'
+import { AiOutlineHeart, AiOutlineProfile } from 'react-icons/ai';
+import { TbMap2 } from 'react-icons/tb';
+import { GoLocation } from 'react-icons/go';
 export const sideBarData = [
     {
         name: 'Home',
         to: '/',
-        icon: <AiOutlineHome />
+        icon: <TbMap2 />
     },
     {
         name: 'Favorite',

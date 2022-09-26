@@ -70,9 +70,11 @@ export const PopupButton = styled(Link)`
 export const PopupRoutingButton = styled.button`
     position: absolute;
     padding: .5em;
-    top: 1em;
-    left: 1em;
+    top: .2em;
+    left: .2em;
+    font-size: 1.5rem;
     color: white;
     outline: none;
     border: none;
+    background: transparent;
 `;

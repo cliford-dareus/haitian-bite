@@ -1,5 +1,5 @@
 import React,{ useEffect, useState, useContext } from 'react';
-import Map, { Marker, Popup, Layer, Source } from 'react-map-gl';
+import Map,{ Marker, Popup, Layer, Source } from 'react-map-gl';
 import { userContext } from '../helper/UserLocation';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import SearchForm from '../Components/SearchForm';
@@ -10,7 +10,8 @@ import ypin from '../assets/ypin.png'
 import { getLocations } from '../helper/FetchLocation';
 import { getDirections } from '../Utils/API';
 
-import { HomePageContainer, MarkerTitle, PopupButton, PopupCardTitle, PopupImageContainer, PopupItemDetailsContainer, PopupItemsContainer, PopupRoutingButton } from '../Utils/Styles/HomePage';
+import { HomePageContainer, MarkerTitle, PopupCardTitle,} from '../Utils/Styles/HomePage';
+import   PopupContent from '../Components/Popup';
 
 const Home = ({ isOpen}) => {
   const { coords, isReady } = useContext(userContext);
@@ -36,6 +37,7 @@ const Home = ({ isOpen}) => {
     }
   });
 
+  const [ searchResult, setSearchResult ] = useState([]);
   const [ startLayer, setStartLayer ] = useState(null);
 
   const [ viewport, setViewport ] = useState({
@@ -73,12 +75,12 @@ const Home = ({ isOpen}) => {
         { ...routeLayer, source :{type : 'geojson',
         data: geojson}}
       ));
-  }, [geojson, geojson])
+  }, [geojson, geojson]);
  
   useEffect(() => {
     const locations = async() => {
       const location = await getLocations();
-      const direction = await getDirections(coords, coords);
+      await getDirections(coords, coords);
       setStartLayer({
           id: 'point',
           type: 'circle',
@@ -106,19 +108,17 @@ const Home = ({ isOpen}) => {
       });
       setLocations(location);
     };
-
     locations();
-
     setViewport({...viewport, longitude: coords.longitude, latitude: coords.latitude});
   },[isReady]);
 
   return (
     <HomePageContainer>
-      <SearchForm />
-
+      <SearchForm setSearchResult={setSearchResult}/>
       {isReady? <Map 
+        reuseMaps
         { ...viewport}
-        mapStyle= "mapbox://styles/cliford-dareus/cl8cigcp7000314q6uklerz41"
+        // mapStyle= "mapbox://styles/cliford-dareus/cl8cigcp7000314q6uklerz41"
         mapboxAccessToken = { import.meta.env.VITE_APP_MAPBOX_TOKEN}
         onMove={(evt) => setViewport(evt.viewport)}
       >
@@ -169,37 +169,18 @@ const Home = ({ isOpen}) => {
                   onClose={() => setShowPopup({})}
                   style={{ padding: ''}}                
                 >
-                  <PopupItemsContainer>
-                    <PopupImageContainer>
-                      <img src={location.image} alt="" />
-                      <PopupRoutingButton 
-                        onClick={() => setRoute({longitude:location.longitude,latitude: location.latitude})}
-                      >
-              
-                      </PopupRoutingButton>
-                    </PopupImageContainer>
-
-                    <PopupItemDetailsContainer>
-                      <PopupCardTitle>
-                        {location.title}
-                      </PopupCardTitle>
-                      <p>{location.rating}</p>
-                      <p>{location.adress}</p>
-                      <p>{location.phone}</p>
-                    </PopupItemDetailsContainer>
-
-                    <PopupButton to={`/place/:${location._id}`}>
-                      Read More
-                    </PopupButton>
-                  </PopupItemsContainer>
-                </Popup>) 
+                  <PopupContent 
+                    location={location}
+                    setRoute={setRoute}
+                  />
+                </Popup>
+              ) 
             }
           </React.Fragment>
         ))};
             <Source id="my-data" type="geojson" data={geojson}>     
               { routeLayer.source.data !== null && <Layer { ...routeLayer}/>}
             </Source>
-        { startLayer === null && <Layer {...startLayer} />}
       </Map> 
       : 
       <Loading />}
