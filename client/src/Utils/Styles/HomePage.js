@@ -38,6 +38,7 @@ export const PopupItemsContainer = styled.div`
 `;
 
 export const PopupImageContainer = styled.div`
+    position: relative;
     width: 100%;
     height: 150px;
     overflow: hidden;
@@ -50,7 +51,8 @@ export const PopupItemDetailsContainer = styled.div`
 `;
 
 export const PopupCardTitle = styled.h2`
-`
+`;
+
 export const PopupButton = styled(Link)`
     display: inline;
     text-decoration: none;
@@ -64,3 +66,13 @@ export const PopupButton = styled(Link)`
     // box-shadow:0px 0px 4px 0px #000000 ;
     margin: 0 auto;
 `; 
+
+export const PopupRoutingButton = styled.button`
+    position: absolute;
+    padding: .5em;
+    top: 1em;
+    left: 1em;
+    color: white;
+    outline: none;
+    border: none;
+`;
