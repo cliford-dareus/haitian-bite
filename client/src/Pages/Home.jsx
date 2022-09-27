@@ -7,10 +7,9 @@ import Loading from '../Components/Loading';
 import pin from '../assets/pin.png';
 import ypin from '../assets/ypin.png'
 
-import { getLocations } from '../helper/FetchLocation';
+import { getLocations, geojsonData } from '../helper/FetchLocation';
 import { getDirections } from '../Utils/API';
-
-import { HomePageContainer, MarkerTitle, PopupCardTitle,} from '../Utils/Styles/HomePage';
+import { HomePageContainer, MarkerTitle } from '../Utils/Styles/HomePage';
 import   PopupContent from '../Components/Popup';
 
 const Home = ({ isOpen}) => {
@@ -19,25 +18,7 @@ const Home = ({ isOpen}) => {
   const [ showPopup, setShowPopup ] = useState({});
   const [ geojson, setGeoJson ] = useState({});
   const [ route, setRoute ] = useState({});
-  const [ routeLayer, setRouteLayer ] = useState({
-    id: 'Route',
-    type: 'line',
-    source: {
-      type: 'geojson',
-      data: {}
-    },
-    layout: {
-      'line-join': 'round',
-      'line-cap': 'round'
-    },
-    paint: {
-      'line-color': '#3887be',
-      'line-width': 7,
-      'line-opacity': 1
-    }
-  });
-
-  const [ searchResult, setSearchResult ] = useState([]);
+  const [ routeLayer, setRouteLayer ] = useState(geojsonData);
   const [ startLayer, setStartLayer ] = useState(null);
 
   const [ viewport, setViewport ] = useState({
@@ -45,7 +26,7 @@ const Home = ({ isOpen}) => {
     height: `calc(100vh - ${isOpen? `150px` : `55px`}`,
     longitude: coords.longitude,
     latitude: coords.latitude,
-    zoom: 12
+    zoom: 15
   });
 
   const handlePopup = (location) => {
@@ -79,7 +60,7 @@ const Home = ({ isOpen}) => {
  
   useEffect(() => {
     const locations = async() => {
-      const location = await getLocations();
+      const locations = await getLocations();
       await getDirections(coords, coords);
       setStartLayer({
           id: 'point',
@@ -106,7 +87,7 @@ const Home = ({ isOpen}) => {
           }
         
       });
-      setLocations(location);
+      setLocations(locations);
     };
     locations();
     setViewport({...viewport, longitude: coords.longitude, latitude: coords.latitude});
@@ -114,7 +95,7 @@ const Home = ({ isOpen}) => {
 
   return (
     <HomePageContainer>
-      <SearchForm setSearchResult={setSearchResult}/>
+      <SearchForm/>
       {isReady? <Map 
         reuseMaps
         { ...viewport}

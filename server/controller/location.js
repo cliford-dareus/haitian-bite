@@ -12,6 +12,12 @@ const createLocation = async ( req, res) => {
     res.status(StatusCodes.CREATED).json({ location });
 };
 
+const updateLocation = async ( req,res ) => {
+    const { id } = req.params;
+
+    const location = await Location.findByIdAndUpdate()
+}
+
 const getLocation = async ( req, res ) => {
     const { title, ratingFilter, sort } = req.query;
     let newObject = {};

@@ -44,6 +44,10 @@ const locationSchema = new mongoose.Schema({
         min: -180,
         max: 180,
   },
+  favorite: {
+    type: 'Boolean',
+    default: false
+  }
 });
 
 

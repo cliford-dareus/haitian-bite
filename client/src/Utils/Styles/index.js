@@ -7,5 +7,6 @@ export const AppContainer = styled.div`
     display: flex;
     transition: all 1s;
     font-family:  'Montserrat', sans-serif;
+    overflow: hidden;
 `;
 

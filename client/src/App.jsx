@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Location from './Components/Location';
 import SideBar from './Components/SideBar';
 import Home from './Pages/Home';
+import LocationList from './Pages/LocationList';
 import { AppContainer } from './Utils/Styles';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Routes>
          <Route path='/' element={<Home isOpen={isOpen}/>}/> 
          <Route path='/place/:id' element={<Location />}/> 
+         <Route path='/location' element={<LocationList />}/> 
       </Routes>
     </AppContainer>
   )
