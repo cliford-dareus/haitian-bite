@@ -26,7 +26,7 @@ const UserLocationProvider = ({children}) => {
 
     setTimeout(() => {
       setIsReady(true)
-    },1000)
+    },500)
   //   console.log(`More or less ${crd.accuracy} meters.`);
   };
 
@@ -52,7 +52,6 @@ const UserLocationProvider = ({children}) => {
     }
   };
     getUserLocation()
-
   }, [])
   
   

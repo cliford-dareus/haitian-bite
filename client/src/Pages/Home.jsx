@@ -1,13 +1,13 @@
 import React,{ useEffect, useState, useContext } from 'react';
 import Map,{ Marker, Popup, Layer, Source } from 'react-map-gl';
-import { userContext } from '../helper/UserLocation';
+import { userContext } from '../Context/UserCoordContext';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import SearchForm from '../Components/SearchForm';
 import Loading from '../Components/Loading';
 import pin from '../assets/pin.png';
-import ypin from '../assets/ypin.png'
+import ypin from '../assets/ypin.png';
 
-import { getLocations, geojsonData } from '../helper/FetchLocation';
+import { getLocations, geojsonData, startingLayer } from '../helper/FetchLocation';
 import { getDirections } from '../Utils/API';
 import { HomePageContainer, MarkerTitle } from '../Utils/Styles/HomePage';
 import   PopupContent from '../Components/Popup';
@@ -19,8 +19,7 @@ const Home = ({ isOpen}) => {
   const [ geojson, setGeoJson ] = useState({});
   const [ route, setRoute ] = useState({});
   const [ routeLayer, setRouteLayer ] = useState(geojsonData);
-  const [ startLayer, setStartLayer ] = useState(null);
-
+  const [ startLayer, setStartLayer ] = useState({...startingLayer});
   const [ viewport, setViewport ] = useState({
     width: `calc(100vw - ${isOpen? `150px` : `55px`}`,
     height: `calc(100vh - ${isOpen? `150px` : `55px`}`,
@@ -56,37 +55,13 @@ const Home = ({ isOpen}) => {
         { ...routeLayer, source :{type : 'geojson',
         data: geojson}}
       ));
-  }, [geojson, geojson]);
+  }, [geojson]);
  
   useEffect(() => {
     const locations = async() => {
       const locations = await getLocations();
       await getDirections(coords, coords);
-      setStartLayer({
-          id: 'point',
-          type: 'circle',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'FeatureCollection',
-              features: [
-                {
-                  type: 'Feature',
-                  properties: {},
-                  geometry: {
-                    type: 'Point',
-                    coordinates: [coords.longitude, coords.latitude]
-                  }
-                }
-              ]
-            }
-          },
-          paint: {
-            'circle-radius': 30,
-            'circle-color': '#DAE86F'
-          }
-        
-      });
+      setStartLayer({...startLayer, source: { data: { features:{geometry:{ coordinates: [coords.longitude, coords.latitude]}}}}});
       setLocations(locations);
     };
     locations();
